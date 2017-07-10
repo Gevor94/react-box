@@ -1,6 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import Login from './components/Login/index';
+import { createBrowserHistory } from 'history'
+import Routes from './routes';
 
-ReactDOM.render(<Login />, document.getElementById('root'));
+import './index.css';
+
+ReactDOM.render(
+  <Routes history={createBrowserHistory} />,
+  document.getElementById('root')
+);
+
+
