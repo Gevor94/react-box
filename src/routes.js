@@ -8,9 +8,9 @@ import Registration from './components/Registration';
 const Routes = (props) => (
   <BrowserRouter {...props}>
     <div>
-      <Route exact path="/" component={Registration} />
-      <Route path="/Login" component={Login} />
+      <Route exact path="/" component={Login} />
       <Route path="/Registration" component={Registration} />
+      <Route path="/Main" component={Main} />
     </div>
   </BrowserRouter>
 );

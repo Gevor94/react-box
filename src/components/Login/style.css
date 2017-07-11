@@ -1,0 +1,34 @@
+.center {
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	margin-top: 15%
+}
+
+.hide {
+	display: none;
+}
+
+.error {
+	border: solid 1px orange;
+}
+
+#div-tooltip {
+	display: -webkit-box;
+}
+
+#forgot {
+	padding-left: 20px;
+}
+#buttons {
+    margin-top: 10px;
+}
+
+#email {
+	margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+#btn_sign_in {
+	margin-right: 10px
+}
