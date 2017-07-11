@@ -18,8 +18,7 @@ class Login extends React.Component {
       let cb = (success) => {
           if(success) {
               this.setState ({
-                  success:true,
-                  hasError:true
+                  success:true
               });
               //TODO route main
           } else {

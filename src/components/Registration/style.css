@@ -1,0 +1,41 @@
+body {
+    background: url(page_background.gif);
+
+}
+.page-header{
+    margin: 5px;
+}
+.signup-title {
+    color: #65676b;
+}
+.register-main {
+    margin-top: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-register {
+    margin-top: 5px;
+}
+
+.register-group {
+    width: 15%;
+}
+.register-control {
+    margin: 5px;
+    height: 40px;
+}
+.btn-register {
+    margin: 7px;
+}
+.register-block {
+    display: -webkit-box;
+}
+.field-error {
+    max-width: 100%;
+    display: block;
+    color: #d60823;
+    margin-top: 6%;
+    font-weight: 300;
+}
