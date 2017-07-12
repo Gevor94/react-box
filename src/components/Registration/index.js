@@ -20,6 +20,7 @@ class Registration extends React.Component {
             emailIsEmpty: true,
             emailIsPristine: false,
             emailHasError: false,
+            emailIsBusy: false,
             passwordIsEmpty: true,
             passwordIsPristine: false,
             confPasswordIsEmpty: true,
@@ -40,8 +41,9 @@ class Registration extends React.Component {
             if(success) {
                 this.props.history.push('/');
             } else {
-                console.log('Error message');
-                //TODO show error
+                this.setState({
+                    emailIsBusy: true
+                });
             }
         };
         switch(props.target.id) {
@@ -55,7 +57,6 @@ class Registration extends React.Component {
                     };
                     RequestManager.makeRequest('register', params, cb, 'POST');
                 }
-                console.log('sign up');
                 break;
             case 'btn_cancel':
                 this.props.history.push('/');
@@ -192,6 +193,11 @@ class Registration extends React.Component {
         }, function() {
             this.checkEmail();
         });
+        if (this.state.emailIsBusy) {
+            this.setState({
+                emailIsBusy: false
+            });
+        }
     }
 
     handlePasswordInput(event) {
@@ -213,6 +219,12 @@ class Registration extends React.Component {
     }
 
     render() {
+      let isDisabled = false;
+      if (this.state.nameIsEmpty || this.state.surnameIsEmpty || 
+          this.state.passwordIsEmpty || this.state.passwordIsEmpty ||
+          this.state.confPasswordIsEmpty) {
+               isDisabled = true;
+          }
       return (
           <div className="register-main">
             <div className="register-group">
@@ -245,6 +257,7 @@ class Registration extends React.Component {
                       onChange={this.handleEmailInput}/>
                     <ControlLabel className="field-error"> {this.state.emailIsEmpty && this.state.emailIsPristine ? "Email field can't be empty" : null} </ControlLabel>
                     <ControlLabel className="field-error"> {this.state.emailHasError ? "Email is invalid" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.emailIsBusy ? "This email is already in use, try another one" : null} </ControlLabel>
                  </div>
                  <div className="register-block">
                     <FormControl
@@ -266,7 +279,7 @@ class Registration extends React.Component {
                  </div>
                 </div>
                 <div>
-                    <Button id="btn_sign_up" bsStyle="primary" type="submit" className="btn-register" onClick={this.clickHandler}>Sign Up</Button>
+                    <Button id="btn_sign_up" disabled={isDisabled} bsStyle="primary" type="submit" className="btn-register" onClick={this.clickHandler}>Sign Up</Button>
                     <Button id="btn_cancel" type="submit" className="btn-register" onClick={this.clickHandler}>Cancel</Button>
                 </div>
             </div>
