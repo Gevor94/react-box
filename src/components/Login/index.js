@@ -31,7 +31,7 @@ class Login extends React.Component {
             case 'btn_sign_in':
                 console.log(this.email.getBoundingClientRect());
                 let params = {
-                    userName: this.email.value,
+                    email: this.email.value,
                     password: this.password.value
                 };
                 RequestManager.makeRequest('login', params, cb, 'POST');
