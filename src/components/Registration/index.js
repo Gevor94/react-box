@@ -13,12 +13,17 @@ class Registration extends React.Component {
             email: '',
             password: '',
             confPassword: '',
-            nameIsEmpty: false,
-            surnameIsEmpty: false,
-            emailIsEmpty: false,
+            nameIsEmpty: true,
+            nameIsPristine: false,
+            surnameIsEmpty: true,
+            surnameIsPristine: false,
+            emailIsEmpty: true,
+            emailIsPristine: false,
             emailHasError: false,
-            passwordIsEmpty: false,
-            confPasswordIsEmpty: false,
+            passwordIsEmpty: true,
+            passwordIsPristine: false,
+            confPasswordIsEmpty: true,
+            confPasswordIsPristine: false,
             confPasswordHasError: false
 
         };
@@ -164,7 +169,8 @@ class Registration extends React.Component {
 
     handleNameInput(event) {
         this.setState({
-            name: event.target.value
+            name: event.target.value,
+            nameIsPristine: true
         }, function() {
             this.checkName();
         });
@@ -172,7 +178,8 @@ class Registration extends React.Component {
 
     handleSurnameInput(event) {
         this.setState({
-            surname: event.target.value
+            surname: event.target.value,
+            surnameIsPristine: true
         }, function() {
             this.checkSurname();
         });
@@ -180,7 +187,8 @@ class Registration extends React.Component {
 
     handleEmailInput(event) {
         this.setState({
-            email: event.target.value
+            email: event.target.value,
+            emailIsPristine: true
         }, function() {
             this.checkEmail();
         });
@@ -188,7 +196,8 @@ class Registration extends React.Component {
 
     handlePasswordInput(event) {
         this.setState({
-            password: event.target.value
+            password: event.target.value,
+            passwordIsPristine: true
         }, function() {
             this.checkPassword();
         });
@@ -196,7 +205,8 @@ class Registration extends React.Component {
 
     handleConfirmPasswordInput(event) {
         this.setState({
-            confPassword: event.target.value
+            confPassword: event.target.value,
+            confPasswordIsPristine: true
         }, function() {
             this.checkConfPassword();
         });
@@ -216,7 +226,7 @@ class Registration extends React.Component {
                       ref = "name"
                       placeholder="Name"
                       onChange = {this.handleNameInput}/>
-                    <ControlLabel className="field-error"> {this.state.nameIsEmpty ? "Name field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.nameIsEmpty && this.state.nameIsPristine ? "Name field can't be empty" : null} </ControlLabel>
                   </div>
                   <div className="register-block">
                     <FormControl
@@ -224,7 +234,7 @@ class Registration extends React.Component {
                       ref = "surname"
                       placeholder="Surname"
                       onChange = {this.handleSurnameInput}/>
-                    <ControlLabel className="field-error"> {this.state.surnameIsEmpty ? "Surname field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.surnameIsEmpty && this.state.surnameIsPristine ? "Surname field can't be empty" : null} </ControlLabel>
                   </div>
                   <div className="register-block">
                     <FormControl
@@ -233,7 +243,7 @@ class Registration extends React.Component {
                       ref="email"
                       placeholder="Email"
                       onChange={this.handleEmailInput}/>
-                    <ControlLabel className="field-error"> {this.state.emailIsEmpty ? "Email field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.emailIsEmpty && this.state.emailIsPristine ? "Email field can't be empty" : null} </ControlLabel>
                     <ControlLabel className="field-error"> {this.state.emailHasError ? "Email is invalid" : null} </ControlLabel>
                  </div>
                  <div className="register-block">
@@ -243,7 +253,7 @@ class Registration extends React.Component {
                       placeholder="Password"
                       ref="password"
                       onChange={this.handlePasswordInput}/>
-                    <ControlLabel className="field-error"> {this.state.passwordIsEmpty ? "Password can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.passwordIsEmpty && this.state.passwordIsPristine ? "Password can't be empty" : null} </ControlLabel>
                  </div>
                  <div className="register-block">
                     <FormControl
@@ -251,7 +261,7 @@ class Registration extends React.Component {
                       className="register-control"
                       placeholder="Re-enter password"
                       onChange={this.handleConfirmPasswordInput}/>
-                    <ControlLabel className="field-error"> {this.state.confPasswordIsEmpty ? "Re-enter password field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error"> {this.state.confPasswordIsEmpty && this.state.confPasswordIsPristine ? "Re-enter password field can't be empty" : null} </ControlLabel>
                     <ControlLabel className="field-error"> {this.state.confPasswordHasError ? "Password and re-entered password is different" : null} </ControlLabel>
                  </div>
                 </div>
