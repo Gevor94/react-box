@@ -37,7 +37,7 @@ class Login extends React.Component {
                 RequestManager.makeRequest('login', params, cb, 'POST');
 				break;
 			case 'btn_register':
-                //TODO open registration page
+                this.props.history.push('/Registration');
                 console.log('Register');
 				break;
             case 'forgot':

@@ -33,8 +33,7 @@ class Registration extends React.Component {
     clickHandler(props) {
         let cb = (success) => {
             if(success) {
-                console.log('Redirect to login page');
-                //TODO redirect to login page
+                this.props.history.push('/');
             } else {
                 console.log('Error message');
                 //TODO show error
@@ -54,21 +53,22 @@ class Registration extends React.Component {
                 console.log('sign up');
                 break;
             case 'btn_cancel':
-                //TODO render login page
+                this.props.history.push('/');
                 console.log('cancel');
                 break;
         }
     }
 
     canBeSubmitted() {
-        const checkName = this.checkName(),
-              checkSurname = this.checkSurname(),
-              checkEmail = this.checkEmail(),
-              checkPassword = this.checkPassword();
-       if (checkName && checkSurname && checkEmail && checkPassword) {
+        if (this.state.nameIsEmpty || this.state.surnameIsEmpty ||
+            this.state.emailIsEmpty || this.state.passwordIsEmpty ||
+            this.state.confPasswordIsEmpty) {
+            return false;
+        } else if (this.state.emailHasError || this.state.confPasswordHasError) {
+            return false;
+        } else {
             return true;
-       }
-       return false;
+        }
     }
 
     checkName() {
@@ -129,52 +129,77 @@ class Registration extends React.Component {
         const password = this.state.password;
         const confPassword = this.state.confPassword;
         this.setState({
-            passwordIsEmpty: password === '' ? true : false,
-            confPasswordIsEmpty: confPassword === '' ? true : false,
-            confPasswordHasError: false
+            passwordIsEmpty: password === '' ? true : false
+        }, function() {
+            if(this.state.confPassword !== '') {
+                this.checkConfPassword();
+            }
         });
-        if (this.state.passwordIsEmpty || this.state.confPasswordIsEmpty) {
-            return false;
-        } else {
-            this.setState({
-                confPasswordHasError: password !== confPassword ? true : false
-            });
-        }
+    }
 
-        if(this.state.confPasswordHasError) {
-            return false;
-        }
-        return true;
+    checkConfPassword() {
+        const password = this.state.password;
+        const confPassword = this.state.confPassword;
+        this.setState({
+            confPasswordIsEmpty: confPassword === '' ? true : false
+        }, function() {
+            if (this.state.password === '') {
+                return;
+            } else {
+                this.setState({
+                    confPasswordIsEmpty: confPassword === '' ? true : false,
+                    confPasswordHasError: false
+                }, function() {
+                    if (this.state.confPasswordIsEmpty) {
+                        return;
+                    } else {
+                        this.setState({
+                            confPasswordHasError: password !== confPassword ? true : false
+                        });
+                    }
+                });
+            }
+        });
     }
 
     handleNameInput(event) {
         this.setState({
             name: event.target.value
-        })
+        }, function() {
+            this.checkName();
+        });
     }
 
     handleSurnameInput(event) {
         this.setState({
             surname: event.target.value
-        })
+        }, function() {
+            this.checkSurname();
+        });
     }
 
     handleEmailInput(event) {
         this.setState({
             email: event.target.value
-        })
+        }, function() {
+            this.checkEmail();
+        });
     }
 
     handlePasswordInput(event) {
         this.setState({
             password: event.target.value
-        })
+        }, function() {
+            this.checkPassword();
+        });
     }
 
     handleConfirmPasswordInput(event) {
         this.setState({
             confPassword: event.target.value
-        })
+        }, function() {
+            this.checkConfPassword();
+        });
     }
 
     render() {
