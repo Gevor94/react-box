@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.use((req, res, next) => {
     // check header or url parameters for token
-    var token = req.query.token || req.headers['x-access-token'];
+    const token = req.query.token || req.headers['access-token'];
 
     // decode token
     if (token) {

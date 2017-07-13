@@ -19,7 +19,10 @@ router.post('/login', (req, res) => {
                 var token = jwt.sign(payload, configs.jwtSecretKey);
                 res.json({
                     success: true,
-                    token: token
+                    token: token,
+                    name: user.name,
+                    surname: user.surname
+
                 });
             } else {
                 res.json({
