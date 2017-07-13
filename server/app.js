@@ -1,68 +1,23 @@
-let express = require('express'),
-    path = require('path'),
-    crud = require('./crud'),
-    user = require('./User/user'),
-    jwt    = require('jsonwebtoken'),
-    passport = require("passport"),
-    passportJWT = require("passport-jwt");
+const express = require('express'),
+    loginRoute = require('./Routes/login'),
+    mainRoute = require('./Routes/main'),
+    registerRoute = require('./Routes/register');
 
-let app = express(),
-    JwtStrategy = passportJWT.Strategy,
-    ExtractJwt = passportJWT.ExtractJwt;
+const app = express();
+const PORT = process.env.PORT || 9000;
 
-
-app.get('*', (req, res) => {
-    //TODO
-    console.log('Received request');
-});
-
-const jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeader(),
-    secretOrKey: 'tasmanianDevil'
-};
-
-let strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-    console.log('payload received', jwt_payload);
-    // usually this would be a database call:
-    let user = users[_.findIndex(users, {id: jwt_payload.id})];
-    if (user) {
-        next(null, user);
-    } else {
-        next(null, false);
-    }
-});
-
-passport.use(strategy);
-
-app.post('/login', (req, res) => {
+// Middleware
+//set headers
+app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
-    let getUserCB = (user) => {
-        if(!user) {
-            res.end(JSON.stringify({success: false}));
-        } else {
-
-        }
-    };
-    let requestedUser = JSON.parse(req.query.data);
-    crud.getUserByEmail(requestedUser.email, getUserCB);
-    //crud.doLogin(obj);
-    res.json(req.query.data);
-
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
-app.post('/register', (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    let newUser = JSON.parse(req.query.data),
-        registerUserCB = () => {
-            res.end(JSON.stringify({success: true}));
-        },
-        getUserCB = (user) => {
-            if(user) {
-                res.end(JSON.stringify({success: false}));
-            } else {
-                crud.registerNewUser(newUser, registerUserCB);
-            }
-        };
-    crud.getUserByEmail(newUser.email, getUserCB);
+app.use('/', registerRoute);
+app.use('/', loginRoute);
+app.use('/', mainRoute);
+
+app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}!`);
 });
-module.exports = app;

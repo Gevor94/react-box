@@ -1,9 +1,10 @@
 let User = require('./User/user'),
     bcrypt = require('bcrypt'),
-    mysql = require('mysql');
+    mysql = require('mysql'),
+    configs = require('./Configs/config');
 
-const USER_DETAILS_TABLE_NAME = 'userDetails',
-    DATABASE_NAME = 'testDB',
+const USER_DETAILS_TABLE_NAME = configs.USER_DETAILS_TABLE_NAME,
+    DATABASE_NAME = configs.DATABASE_NAME,
     idCol = 'id',
     nameCol = 'name',
     surnameCol = 'surname',
@@ -11,9 +12,9 @@ const USER_DETAILS_TABLE_NAME = 'userDetails',
     passwordCol = 'password';
 
 let con = mysql.createConnection({
-    host: 'localhost',
-    user: 'testUser',
-    password: 'test',
+    host: configs.mySqlHost,
+    user: configs.mySqlUsername,
+    password: configs.mySqlPassword,
     database: DATABASE_NAME
 });
 
@@ -40,11 +41,17 @@ let createTable =  (tableName) => {
     })
 };
 
-module.exports.getUserByEmail = (email, callback) => {
-    const queryString = 'SELECT * FROM '
-                        + USER_DETAILS_TABLE_NAME
-                        + ' WHERE ' + emailCol + '="' + email + '";';
-    con.query(queryString, (err, result) => {
+let getHash = (password) => {
+    return bcrypt.hashSync(password, 10);
+};
+
+module.exports = {
+
+    getUserByEmail: (email, callback) => {
+        const queryString = 'SELECT * FROM '
+            + USER_DETAILS_TABLE_NAME
+            + ' WHERE ' + emailCol + '="' + email + '";';
+        con.query(queryString, (err, result) => {
             if (err) {
                 //errno1146 means that table doesn't exist
                 if(err.errno === 1146) {
@@ -53,49 +60,28 @@ module.exports.getUserByEmail = (email, callback) => {
                     throw err;
                 }
             }
+            //assume that email is unique.
             var user = result.length > 0 ? new User(result[0]) : undefined;
             callback(user);
         });
+    },
+
+    isPasswordsMatch: (password, hash) => {
+        return bcrypt.compareSync(password, hash);
+    },
+
+    registerNewUser: (user, callback) => {
+        const queryString = 'INSERT INTO ' + USER_DETAILS_TABLE_NAME
+            + ' ( ' + nameCol + ', ' +  surnameCol + ', '
+            + emailCol + ', ' + passwordCol + ') VALUES("'
+            +  user.name + '", "' + user.surname
+            + '", "' + user.email + '", "' + getHash(user.password) + '");';
+        con.query(queryString, (err, result) => {
+            if (err) {
+                throw err;
+            }
+            callback(result);
+        });
+    }
+
 };
-
-let getHash = (password) => {
-    return bcrypt.hashSync(password, 10);
-};
-
-let isPasswordsMatch = (password, hash) => {
-    return bcrypt.compareSync(password, hash);
-};
-
-module.exports.registerNewUser = (user, callback) => {
-    const queryString = 'INSERT INTO ' + USER_DETAILS_TABLE_NAME
-        + ' ( ' + nameCol + ', ' +  surnameCol + ', '
-        + emailCol + ', ' + passwordCol + ') VALUES("'
-        +  user.name + '", "' + user.surname
-        + '", "' + user.email + '", "' + getHash(user.password) + '");';
-    con.query(queryString, (err, result) => {
-        if (err) {
-            throw err;
-        }
-        callback(result);
-    });
-};
-
-
-//
-// var crud = {
-//     doLogin: (userDetails) => {
-//         con.query('SELECT * FROM ' + USER_DETAILS_TABLE_NAME + ';', (err, result) => {
-//             if (err) {
-//                 console.log('error: ', err.message);
-//                 createTable(USER_DETAILS_TABLE_NAME);
-//             }
-//             console.log("Result: " + result);
-//         });
-//     },
-//
-//     register: (userDetails) => {
-//
-//     }
-// };
-//
-// module.exports = crud;
