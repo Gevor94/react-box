@@ -18,9 +18,9 @@ class Login extends React.Component {
     clickHandler(props) {
         let cb = (response) => {
             if(response.success) {
-                this.token = response.token;
-                this.name = response.name;
-                this.surname = response.surname;
+                window.sessionStorage.accessToken = response.token;
+                window.sessionStorage.name = response.name;
+                window.sessionStorage.surname = response.surname;
                 this.setState ({
                     success:true,
                     hasError: false,
@@ -68,10 +68,7 @@ class Login extends React.Component {
             positionLeft = emailPosition.left + emailPosition.width;
         }
         if(this.state.redirectTo) {
-            return <Redirect push to={{pathname: this.state.redirectTo,
-                token: this.token,
-                name: this.name,
-                surname: this.surname}}/>
+            return <Redirect push to={this.state.redirectTo}/>
         }
         return (
             <div className="center">

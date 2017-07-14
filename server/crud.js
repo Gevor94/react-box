@@ -18,14 +18,14 @@ let con = mysql.createConnection({
     database: DATABASE_NAME
 });
 
-con.connect(function(err) {
+con.connect((err) => {
     if (err) {
         throw err;
     }
     console.log("Connected!");
 });
 
-let createTable =  (tableName) => {
+let createTable =  (tableName, next) => {
     const queryString = 'CREATE TABLE ' + tableName
         + ' ('
         + idCol + ' int PRIMARY KEY AUTO_INCREMENT, '
@@ -37,7 +37,7 @@ let createTable =  (tableName) => {
         if(err) {
             console.log(err);
         }
-        console.log("Result: " + result);
+        console.log('Created');
     })
 };
 
@@ -56,8 +56,7 @@ module.exports = {
                 //errno1146 means that table doesn't exist
                 if(err.errno === 1146) {
                     createTable(USER_DETAILS_TABLE_NAME);
-                } else {
-                    throw err;
+                    return;
                 }
             }
             //assume that email is unique.
@@ -83,5 +82,4 @@ module.exports = {
             callback(result);
         });
     }
-
 };

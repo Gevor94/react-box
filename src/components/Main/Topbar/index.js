@@ -31,7 +31,7 @@ class Topbar extends React.Component {
 
         return (
                 <div id="topbar">
-                    <FileUploader />
+                    <FileUploader uploadFileCallback={this.props.uploadFileCallback}/>
                     <FormControl id="search" type="text" placeholder="Search" onChange={this.handleEvents} />
                     <NavDropdown id="drop" title={this.props.name}>
                         <MenuItem id="sign_out" onClick={this.handleEvents}>Sign out</MenuItem>

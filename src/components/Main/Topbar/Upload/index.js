@@ -10,7 +10,7 @@ class FileUploader extends React.Component {
     }
 
     handleSubmit(event) {
-        RequestManager.uploadFile(event.target);
+        RequestManager.uploadFile(event.target, this.props.uploadFileCallback);
     }
 
     render() {

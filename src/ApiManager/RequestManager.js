@@ -16,6 +16,7 @@ let requestManager = {
     uploadFile: (data, callback) => {
         fetch(Constants.SERVER_URL + 'upload', {
             method: 'POST',
+            headers: {'access-token': window.sessionStorage.accessToken},
             body: new FormData(data)
         }).then((response) => {
             return response.json();
