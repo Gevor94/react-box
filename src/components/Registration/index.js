@@ -1,5 +1,4 @@
 import React from 'react';
-import classnames from 'classnames';
 import RequestManager from '../../ApiManager/RequestManager';
 import {ControlLabel, Button, FormControl} from 'react-bootstrap';
 import './style.css'
@@ -61,6 +60,8 @@ class Registration extends React.Component {
             case 'btn_cancel':
                 this.props.history.goBack();
                 console.log('cancel');
+                break;
+            default:
                 break;
         }
     }
@@ -235,7 +236,6 @@ class Registration extends React.Component {
                   <div className="register-block">
                     <FormControl
                       className="register-control"
-                      ref = "name"
                       placeholder="Name"
                       onChange = {this.handleNameInput}/>
                     <ControlLabel className="field-error"> {this.state.nameIsEmpty && this.state.nameIsPristine ? "Name field can't be empty" : null} </ControlLabel>
@@ -243,7 +243,6 @@ class Registration extends React.Component {
                   <div className="register-block">
                     <FormControl
                       className="register-control"
-                      ref = "surname"
                       placeholder="Surname"
                       onChange = {this.handleSurnameInput}/>
                     <ControlLabel className="field-error"> {this.state.surnameIsEmpty && this.state.surnameIsPristine ? "Surname field can't be empty" : null} </ControlLabel>
@@ -252,7 +251,6 @@ class Registration extends React.Component {
                     <FormControl
                       type="email"
                       className="register-control"
-                      ref="email"
                       placeholder="Email"
                       onChange={this.handleEmailInput}/>
                     <ControlLabel className="field-error"> {this.state.emailIsEmpty && this.state.emailIsPristine ? "Email field can't be empty" : null} </ControlLabel>
@@ -264,7 +262,6 @@ class Registration extends React.Component {
                       type="password"
                       className="register-control"
                       placeholder="Password"
-                      ref="password"
                       onChange={this.handlePasswordInput}/>
                     <ControlLabel className="field-error"> {this.state.passwordIsEmpty && this.state.passwordIsPristine ? "Password can't be empty" : null} </ControlLabel>
                  </div>
