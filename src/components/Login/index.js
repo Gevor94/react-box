@@ -77,7 +77,7 @@ class Login extends React.Component {
             <div className="center">
                 <div>
                     <span>Email</span>
-                    <input id="email" ref={(email) => this.email = email} className={"form-control " + emailClassName}   placeholder="Email"/>
+                    <input id="email" ref={(email) => this.email = email} className={"form-control " + emailClassName} placeholder="Email"/>
                 <Popover
                     id="popover-basic"
                     className={popoverClassName}

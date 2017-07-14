@@ -1,5 +1,6 @@
 import React from 'react';
-import RequestManager from '../../ApiManager/RequestManager'
+import RequestManager from '../../../../ApiManager/RequestManager';
+import './styles.css';
 
 
 class FileUploader extends React.Component {
@@ -14,10 +15,10 @@ class FileUploader extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}
+            <form id="upload" onSubmit={this.handleSubmit}
                   encType="multipart/form-data">
                 <input type="file" name="file" />
-                <input type='submit' value='Upload!' />
+                <input id="upl_btn" type='submit' value='Upload!' />
             </form>
 
         );

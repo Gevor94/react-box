@@ -1,0 +1,27 @@
+#documents-group {
+    margin-left: 2%;
+    margin-top: 5%;
+    width: 40%;
+    border-style: inset;
+    background-color: ghostwhite;
+}
+
+.bookmark, .remove {
+    cursor: pointer;
+    float: right;
+    margin-left: 0.5px;
+    font-size: 14px;
+    margin-top: 2.5px;
+}
+.bookmark {
+    color: green;
+
+}
+.remove {
+    color: red;
+}
+.doc-item {
+    border-style: ridge;
+    border-width: 0 1px 1px 0;
+    border-color: #939393;
+}

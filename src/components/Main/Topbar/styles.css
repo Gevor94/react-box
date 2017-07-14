@@ -1,0 +1,23 @@
+#topbar {
+    display: -webkit-box;
+}
+#upload-button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+#search {
+    width: 33%;
+    height: 25px;
+    margin-top: 1%;
+}
+.dropdown {
+    display: -webkit-box;
+    margin-left: 30%;
+    height: 1%;
+    margin-top: 1%;
+    font-size: 17px;
+}
