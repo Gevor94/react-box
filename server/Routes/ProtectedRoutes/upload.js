@@ -1,7 +1,8 @@
 const express = require('express'),
+    path = require('path'),
     fileUpload = require('express-fileupload'),
-    fileModel = require('../../Model/FileModel'),
-    crud = require('../../crud');
+    fileModel = require(path.join(__dirname, '../../Model/FileModel')),
+    crud = require(path.join(__dirname, '../../crud'));
 
 const router = express.Router();
 
@@ -14,12 +15,12 @@ router.post('/', (req, res) => {
     }
     if(req.owner) {
         let uploadedFile = req.files.file,
-            filePath = 'uploads/' + uploadedFile.name;
+            filePath = path.join(__dirname, '../../uploads/' + uploadedFile.name);
         uploadedFile.mv(filePath, function (err) {
             if (err) {
                 return res.status(500).send(err);
             }
-            let file = new fileModel(uploadedFile.name, req.owner.email, filePath);
+            let file = new fileModel(uploadedFile.name, req.owner.email, 'uploads/' + uploadedFile.name);
             crud.insertFile(file, (err) => {
                 if(err) {
                     res.json({

@@ -2,7 +2,7 @@ const express = require('express'),
     loginRoute = require('./Routes/login'),
     registerRoute = require('./Routes/register'),
     protectedRoutes = require('./Routes/ProtectedRoutes/protectedRoutes'),
-    uploads = require('./Routes/uploads');
+    uploads = require('./Routes/ProtectedRoutes/document-view');
 
 const app = express();
 const PORT = process.env.PORT || 9000;
