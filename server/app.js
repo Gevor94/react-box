@@ -1,8 +1,8 @@
 const express = require('express'),
     loginRoute = require('./Routes/login'),
-    mainRoute = require('./Routes/main'),
     registerRoute = require('./Routes/register'),
-    uploadRoute = require('./Routes/upload');
+    protectedRoutes = require('./Routes/ProtectedRoutes/protectedRoutes'),
+    uploads = require('./Routes/uploads');
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -16,10 +16,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', registerRoute);
-app.use('/', loginRoute);
-app.use('/', mainRoute);
-app.use('/', uploadRoute);
+app.use('/register', registerRoute);
+app.use('/login', loginRoute);
+app.use('/', protectedRoutes);
+app.use('/uploads', uploads);
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}!`);

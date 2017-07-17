@@ -59,7 +59,6 @@ class Registration extends React.Component {
                 break;
             case 'btn_cancel':
                 this.props.history.goBack();
-                console.log('cancel');
                 break;
             default:
                 break;

@@ -18,9 +18,9 @@ class Login extends React.Component {
     clickHandler(props) {
         let cb = (response) => {
             if(response.success) {
-                window.sessionStorage.accessToken = response.token;
-                window.sessionStorage.name = response.name;
-                window.sessionStorage.surname = response.surname;
+                window.localStorage.accessToken = response.token;
+                window.localStorage.name = response.name;
+                window.localStorage.surname = response.surname;
                 this.setState ({
                     success:true,
                     hasError: false,

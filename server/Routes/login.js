@@ -5,7 +5,7 @@ const express = require('express'),
 
 const router = express.Router();
 
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
     let requestedUser = JSON.parse(req.query.data);
     let getUserCB = (user) => {
         if(!user) {

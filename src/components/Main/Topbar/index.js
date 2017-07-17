@@ -1,5 +1,5 @@
 import React from 'react';
-import {Glyphicon, FormControl, NavDropdown, MenuItem, Button} from 'react-bootstrap';
+import {FormControl, NavDropdown, MenuItem} from 'react-bootstrap';
 import FileUploader from './Upload'
 import {Redirect} from 'react-router';
 import './styles.css'
@@ -20,15 +20,15 @@ class Topbar extends React.Component {
                     redirectTo: './' 
                 });
                 break;
+            default:
+                break;
         }
     }
 
     render() {
         if(this.state.redirectTo) {
-            return <Redirect push to={this.state.redirectTo}/>
-     
+            return <Redirect to={this.state.redirectTo}/>
         }
-
         return (
                 <div id="topbar">
                     <FileUploader uploadFileCallback={this.props.uploadFileCallback}/>

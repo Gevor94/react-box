@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
-import {ListGroup, ListGroupItem, Glyphicon, ControlLabel} from 'react-bootstrap';
+import {ListGroup, Glyphicon, ControlLabel} from 'react-bootstrap';
 import './styles.css'
 
 
@@ -10,10 +9,10 @@ class DocumentsList extends React.Component {
         this.handleItemClick = this.handleItemClick.bind(this);
     }
 
-    handleItemClick(props) {
+    handleItemClick(props, doc) {
         switch(props.target.className) {
-            case 'doc-item':
-                //TODO open in another tab
+            case 'doc-name':
+                window.open('http://localhost:9000/' + doc.path);
                 break;
             case 'remove':
                 //TODO remove group item
@@ -21,14 +20,16 @@ class DocumentsList extends React.Component {
             case 'bookmark':
                 //TODO add bookmark
                 break;
+            default:
+                break;
         }
     }
     render() {
-        let documentsListItem = this.props.documents.map((doc) =>{
-            return <div id={doc.id} className="doc-item" onClick={this.handleItemClick}>
-                           <ControlLabel> {doc} </ControlLabel>
-                           <Glyphicon id={doc} className="remove" glyph="remove" onClick={this.handleItemClick} />
-                           <Glyphicon id={doc} className="bookmark" glyph="star" onClick={this.handleItemClick} />
+        let documentsListItem = this.props.documents.map((doc, i) => {
+            return <div key={i} className="doc-item">
+                           <a href="#" className="doc-name" onClick={(props) => this.handleItemClick(props, doc)}> {doc.name} </a>
+                           <Glyphicon className="remove" glyph="remove" onClick={this.handleItemClick} />
+                           <Glyphicon className="bookmark" glyph="star" onClick={this.handleItemClick} />
                    </div>
         });
         return (

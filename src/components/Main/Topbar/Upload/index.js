@@ -10,6 +10,8 @@ class FileUploader extends React.Component {
     }
 
     handleSubmit(event) {
+        event.preventDefault();
+        event.stopPropagation();
         RequestManager.uploadFile(event.target, this.props.uploadFileCallback);
     }
 

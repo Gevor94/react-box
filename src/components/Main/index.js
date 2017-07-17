@@ -1,28 +1,46 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import DocumentsList from './DocumentsList';
 import Topbar from './Topbar';
-import {Button} from 'react-bootstrap';
+import RequestManager from '../../ApiManager/RequestManager'
 import './styles.css';
+
+let _this;
 
 class Main extends React.Component {
     constructor(props) {
         super(props);
+        _this = this;
         this.userDetails = window.sessionStorage.accessToken;
-        console.log('userDetails', this.userDetails)
+        this.state = {items: []}
     }
 
-    uploadFileCallback(uploadedFile) {
-        //TODO should update list
-        console.log('uploadComplated', uploadedFile);
+    componentWillMount() {
+        let callback = (files) => {
+            this.setState({
+               items: files
+            });
+        };
+        RequestManager.makeRequest('getAllFiles', false, callback);
+    }
+
+    uploadFileCallback(response) {
+        if(response.success) {
+            let items = _this.state.items;
+            items.push(response.file);
+            _this.setState({
+                items: items
+            });
+        } else {
+            //TODO show error
+        }
     }
 
     render() {
-        let docs = ['doc1','doc2','doc3'];
+        console.log('RENDER');
         return (
             <div id="main-page">
                 <Topbar name="Gevorg" uploadFileCallback={this.uploadFileCallback}/>
-                <DocumentsList documents={docs}/>
+                <DocumentsList documents={this.state.items}/>
             </div>
         );
     }

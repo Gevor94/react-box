@@ -1,4 +1,4 @@
-var User = function(user){
+var UserModel = function(user) {
     this.id = user.id;
     this.name = user.name;
     this.surname = user.surname;
@@ -6,4 +6,4 @@ var User = function(user){
     this.password = user.password;
 };
 
-module.exports = User;
+module.exports = UserModel;

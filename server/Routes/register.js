@@ -3,7 +3,7 @@ const express = require('express'),
 
 const router = express.Router();
 
-router.post('/register', (req, res) => {
+router.post('/', (req, res) => {
     let newUser = JSON.parse(req.query.data),
         registerUserCB = () => {
             res.json({success: true});
