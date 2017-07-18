@@ -1,6 +1,5 @@
 import React from 'react';
-import {FormControl, NavDropdown, MenuItem} from 'react-bootstrap';
-import FileUploader from './Upload'
+import {Navbar, Nav, FormGroup, FormControl, Button, NavDropdown, MenuItem} from 'react-bootstrap';
 import {Redirect} from 'react-router';
 import './styles.css'
 
@@ -16,8 +15,9 @@ class Topbar extends React.Component {
     handleEvents(props) {
         switch(props.target.id) {
             case 'sign_out':
+                window.localStorage.clear();
                 this.setState({
-                    redirectTo: './' 
+                    redirectTo: './'
                 });
                 break;
             default:
@@ -30,14 +30,31 @@ class Topbar extends React.Component {
             return <Redirect to={this.state.redirectTo}/>
         }
         return (
-                <div id="topbar">
-                    <FileUploader uploadFileCallback={this.props.uploadFileCallback}/>
-                    <FormControl id="search" type="text" placeholder="Search" onChange={this.handleEvents} />
-                    <NavDropdown id="drop" title={this.props.name}>
-                        <MenuItem id="sign_out" onClick={this.handleEvents}>Sign out</MenuItem>
-                    </NavDropdown>
-                </div>
-               );
+            <Navbar inverse collapseOnSelect>
+                <Navbar.Header>
+                    <Navbar.Brand>
+                        <a href="#" onClick={this.props.homeClickCallback}>Project Name</a>
+                    </Navbar.Brand>
+                </Navbar.Header>
+                <Navbar.Collapse>
+                    <Navbar.Form pullLeft>
+                        <FormGroup >
+                            <FormControl type="text" placeholder="Search" onChange={(props)=>{
+                                this.searchquery = props.target.value;
+                            }
+                            }/>
+                        </FormGroup>
+                        {' '}
+                        <Button type="submit" onClick={(props) => {this.props.searchQuerySubmitCallback(this.searchquery)}}>Search</Button>
+                    </Navbar.Form>
+                    <Nav pullRight>
+                        <NavDropdown title={this.props.name} id="basic-nav-dropdown">
+                            <MenuItem id="sign_out" onClick={this.handleEvents}>Sign out</MenuItem>
+                        </NavDropdown>
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
+        );
     }
 }
 

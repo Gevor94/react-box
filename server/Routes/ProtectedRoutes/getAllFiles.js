@@ -6,7 +6,16 @@ const router = express.Router();
 router.get('/', (req, res) => {
    if(req.owner) {
        let callback = (err, result) => {
-            res.json(result);
+           if(err) {
+               res.json({
+                   success: false
+               });
+               return;
+           }
+            res.json({
+                success: true,
+                files: result
+            });
        };
        crud.getAllFiles(callback);
    }

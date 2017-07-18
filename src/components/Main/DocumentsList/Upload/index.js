@@ -20,7 +20,7 @@ class FileUploader extends React.Component {
             <form id="upload" onSubmit={this.handleSubmit}
                   encType="multipart/form-data">
                 <input type="file" name="file" />
-                <input id="upl_btn" type='submit' value='Upload!' />
+                <input id="upl_btn" type='submit' value='Upload' />
             </form>
 
         );

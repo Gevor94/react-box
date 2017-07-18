@@ -11,16 +11,22 @@ class Main extends React.Component {
         super(props);
         _this = this;
         this.userDetails = window.sessionStorage.accessToken;
-        this.state = {items: []}
+        this.responseCallback = (response) => {
+            if(response.success) {
+                this.setState({
+                    items: response.files
+                });
+            } else {
+                //TODO show error 'Please login first.'
+            }
+        };
+        this.state = {
+            items: []
+        }
     }
 
     componentWillMount() {
-        let callback = (files) => {
-            this.setState({
-               items: files
-            });
-        };
-        RequestManager.makeRequest('getAllFiles', false, callback);
+        RequestManager.makeRequest('getAllFiles', false, this.responseCallback);
     }
 
     uploadFileCallback(response) {
@@ -35,12 +41,23 @@ class Main extends React.Component {
         }
     }
 
+    handleHomeClick() {
+        RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
+    }
+
+    handleSearchQuerySubmit(searchQuery) {
+        const params = {
+            searchQuery: searchQuery
+        };
+        RequestManager.makeRequest('search', params, _this.responseCallback);
+    }
+
     render() {
-        console.log('RENDER');
+        let userName = window.localStorage.name + ' ' + window.localStorage.surname;
         return (
             <div id="main-page">
-                <Topbar name="Gevorg" uploadFileCallback={this.uploadFileCallback}/>
-                <DocumentsList documents={this.state.items}/>
+                <Topbar name={userName} homeClickCallback={this.handleHomeClick} searchQuerySubmitCallback={this.handleSearchQuerySubmit}/>
+                <DocumentsList documents={this.state.items} uploadFileCallback={this.uploadFileCallback}/>
             </div>
         );
     }

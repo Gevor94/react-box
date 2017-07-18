@@ -4,7 +4,8 @@ const express = require('express'),
     crud = require('../../crud'),
     uploadRoute = require('./upload'),
     mainRoute = require('./main'),
-    getAllFiles = require('./getAllFiles');
+    getAllFiles = require('./getAllFiles'),
+    search = require('./search');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use((req, res, next) => {
 router.use('/upload', uploadRoute);
 router.use('/main', mainRoute);
 router.use('/getAllFiles', getAllFiles);
+router.use('/search', search);
 
 module.exports = router;
