@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
             if (err) {
                 return res.status(500).send(err);
             }
-            let file = new fileModel(uploadedFile.name, req.owner.email, 'uploads/' + uploadedFile.name);
+            let file = new fileModel(uploadedFile.name, req.owner.email, 'uploads/' + uploadedFile.name );
             crud.insertFile(file, (err, fileId) => {
                 if(err) {
                     res.json({

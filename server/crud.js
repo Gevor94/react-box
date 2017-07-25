@@ -73,6 +73,71 @@ let getHash = (password) => {
     return bcrypt.hashSync(password, 10);
 };
 
+let getRow = (query, content) => {
+    let index = content.indexOf(query),
+        tempString = content.substring(0,index),
+        lineNumber = tempString.split('\n').length,
+        filteredContent = [];
+
+    content = content.split('\n');
+    for(let i = 3; i > 0; --i) {
+        if(content[lineNumber -i]) {
+            filteredContent.push(content[lineNumber - i] + '\n');
+        }
+    }
+    for (let i = 0 ; i < 4; i++) {
+        if(content[lineNumber + i]) {
+            filteredContent.push(content[lineNumber + i] + '\n');
+        }
+    }
+    filteredContent = filteredContent.join('\n');
+    return filteredContent;
+
+};
+
+let  makeQuery = (queryRow, callback, answ ) => {
+    const queryString = 'SELECT ' + nameCol + ', '
+        + ownerCol + ', '
+        + pathCol + ', '
+        + idCol + ' FROM '
+        + FILES_DETAILS_TABLE_NAME
+        + ' WHERE CONCAT(' + nameCol + ', " ", ' + fileContentCol + ')'
+        + ' LIKE "%' + queryRow + '%";';
+    const queryContent = (nameColumn) => {
+        const query = 'SELECT ' + fileContentCol
+            + ' FROM ' + FILES_DETAILS_TABLE_NAME
+            + ' WHERE ' + nameCol + '="' + nameColumn + '";';
+        return query;
+    };
+
+    con.query(queryString, (err, result) => {
+        if (err) {
+            callback(error, result);
+        } else {
+            if (result.length) {
+                let counter = 0;
+                for(let i = 0, len = result.length; i < len; ++i) {
+                    con.query(queryContent(result[i].name), (err, res) => {
+                        if (err) {
+                            callback(err, result);
+                        } else {
+                            result[i].filteredContent = getRow(queryRow,res[0].file_content);
+                            counter++;
+                            if (counter >= len) {
+                                return answ(result);
+                            }
+                        }
+                    });
+                }
+
+            } else {
+                callback(err, result);
+            }
+        }
+    });
+
+};
+
 module.exports = {
 
     insertFile: (file, callback) => {
@@ -93,6 +158,18 @@ module.exports = {
         });
     },
 
+    deleteFile: (file, callback) => {
+        const queryString = 'DELETE ' + ' FROM ' + FILES_DETAILS_TABLE_NAME
+            + ' WHERE ' + nameCol + ' = ' + '\'' + file.name + '\'' + ' and ' + idCol + ' = '
+            + file.id  + ';';
+        con.query(queryString, (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(false, file);
+        });
+    },
+
     getAllFiles: (callback) => {
         const queryString = 'SELECT * FROM ' + FILES_DETAILS_TABLE_NAME;
         con.query(queryString, (err, result) => {
@@ -104,14 +181,23 @@ module.exports = {
     },
 
     getMatchedFiles: (searchQuery, callback) => {
-        const queryString = 'SELECT ' + nameCol + ', '
-                            + ownerCol + ', '
-                            + pathCol + ' FROM '
-                            + FILES_DETAILS_TABLE_NAME
-                            + ' WHERE CONCAT(' + nameCol + ', " ",' + fileContentCol + ') '
-                            + ' LIKE "%' + searchQuery + '%";';
-        con.query(queryString, (err, result) => {
-            callback(err, result);
+        let fullMatchingQuery = searchQuery.replace(/\s\s+/g, ' '),
+            splittedQuery = fullMatchingQuery.trim().split(' '),
+            counter = 0;
+        makeQuery(fullMatchingQuery, callback, (result) => {
+            if(splittedQuery.length) {
+                for (let i=0,len=splittedQuery.length; i < len; ++i) {
+                    makeQuery(splittedQuery[i], callback, (res) => {
+                        counter++;
+                        result.push.apply(result,res);
+                        if(counter >= splittedQuery.length) {
+                            callback(false, result);
+                        }
+                    });
+                }
+            } else {
+                callback(false, result);
+            }
         });
     },
 

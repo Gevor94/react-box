@@ -6,6 +6,7 @@ const express = require('express'),
     mainRoute = require('./main'),
     getAllFiles = require('./getAllFiles'),
     search = require('./search');
+    deleteFile = require('./delete');
 
 const router = express.Router();
 
@@ -30,5 +31,6 @@ router.use('/upload', uploadRoute);
 router.use('/main', mainRoute);
 router.use('/getAllFiles', getAllFiles);
 router.use('/search', search);
+router.use('/delete', deleteFile);
 
 module.exports = router;

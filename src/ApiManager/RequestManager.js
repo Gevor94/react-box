@@ -15,6 +15,23 @@ let requestManager = {
         });
     },
 
+    deleteFile: (data, callback) => {
+        let file = {
+            name: data.name,
+            id: data.id
+        };
+        fetch(Constants.SERVER_URL + 'delete' + '?data=' + JSON.stringify(file), {
+            method: 'POST',
+            headers: {
+                'access-token': window.localStorage.accessToken
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((body) => {
+            callback(body);
+        });
+    },
+
     uploadFile: (data, callback) => {
         fetch(Constants.SERVER_URL + 'upload', {
             method: 'POST',

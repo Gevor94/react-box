@@ -9,8 +9,8 @@
 .bookmark, .remove, .owner {
     cursor: pointer;
     float: right;
-    margin-left: 0.5px;
-    font-size: 14px;
+    margin-left: 3px;
+    font-size: 16px;
     margin-top: 2.5px;
 }
 .bookmark {
@@ -20,13 +20,28 @@
 .remove {
     color: red;
 }
-
+.doc-content {
+    display: inline;
+    font-size: 10px;
+    cursor: pointer;
+}
+.doc-glyph {
+    font-size: 11px;
+    cursor: pointer;
+}
 .owner {
     margin-right: 10px;
+    color: #001f3f;
+    font-size: small
 }
 .doc-item {
     border-style: ridge;
-    height: 30px;
-    border-width: 0 1px 1px 0;
+    border-width: 0 0 1px 0;
     border-color: #939393;
+}
+.doc-filtered-content {
+    display: block;
+    white-space: pre-wrap;
+    background-color: antiquewhite;
+    margin-top: 7px;
 }

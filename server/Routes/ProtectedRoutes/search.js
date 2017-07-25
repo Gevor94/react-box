@@ -15,10 +15,11 @@ router.get('/', (req, res) => {
             let foundedFiles = [];
             for(let i in result) {
                 let tmpFile = result[i];
-                foundedFiles.push(new File(tmpFile.name, tmpFile.owner, tmpFile.path, tmpFile.id));
+                foundedFiles.push(new File(tmpFile.name, tmpFile.owner, tmpFile.path, tmpFile.id, tmpFile.filteredContent ));
             }
             res.json({
                 success: true,
+                action: 'search',
                 files: foundedFiles
             });
         };

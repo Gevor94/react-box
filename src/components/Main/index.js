@@ -16,17 +16,34 @@ class Main extends React.Component {
                 this.setState({
                     items: response.files
                 });
+                switch (response.action) {
+                    case 'getAllFiles':
+                        if(this.state.searchedFiles) {
+                            this.setState({
+                                searchedFiles: false
+                            });
+                        }
+                        break;
+                    case 'search':
+                        if (!this.state.searchedFiles) {
+                            this.setState({
+                                searchedFiles: true
+                            });
+                        }
+                        break;
+                }
             } else {
                 //TODO show error 'Please login first.'
             }
         };
         this.state = {
-            items: []
+            items: [],
+            searchedFiles: false
         }
     }
 
     componentWillMount() {
-        RequestManager.makeRequest('getAllFiles', false, this.responseCallback);
+        RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
     }
 
     uploadFileCallback(response) {
@@ -41,6 +58,21 @@ class Main extends React.Component {
         }
     }
 
+    deletedFileCallback(response) {
+        if(response.success) {
+            let items = _this.state.items;
+            items = items.filter((item) => {
+                return item.id !== response.file.id;
+            });
+            _this.setState({
+                items: items
+            });
+        } else {
+            //TODO show error
+        }
+    }
+
+
     handleHomeClick() {
         RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
     }
@@ -49,15 +81,20 @@ class Main extends React.Component {
         const params = {
             searchQuery: searchQuery
         };
-        RequestManager.makeRequest('search', params, _this.responseCallback);
+        if (searchQuery) {
+            RequestManager.makeRequest('search', params, _this.responseCallback);
+        } else {
+            RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
+        }
     }
 
     render() {
         let userName = window.localStorage.name + ' ' + window.localStorage.surname;
         return (
             <div id="main-page">
-                <Topbar name={userName} homeClickCallback={this.handleHomeClick} searchQuerySubmitCallback={this.handleSearchQuerySubmit}/>
-                <DocumentsList documents={this.state.items} uploadFileCallback={this.uploadFileCallback}/>
+                <Topbar name={userName} homeClickCallback={this.handleHomeClick}  searchQuerySubmitCallback={this.handleSearchQuerySubmit}/>
+                <DocumentsList documents={this.state.items} searchedFiles={this.state.searchedFiles}
+                               uploadFileCallback={this.uploadFileCallback} deletedFileCallback={this.deletedFileCallback}/>
             </div>
         );
     }
