@@ -18,7 +18,8 @@ let requestManager = {
     deleteFile: (data, callback) => {
         let file = {
             name: data.name,
-            id: data.id
+            id: data.id,
+            path: data.path
         };
         fetch(Constants.SERVER_URL + 'delete' + '?data=' + JSON.stringify(file), {
             method: 'POST',

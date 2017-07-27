@@ -2,6 +2,7 @@ import React from 'react';
 import DocumentsList from './DocumentsList';
 import Topbar from './Topbar';
 import RequestManager from '../../ApiManager/RequestManager'
+import {Redirect} from 'react-router';
 import './styles.css';
 
 let _this;
@@ -49,7 +50,7 @@ class Main extends React.Component {
                         break;
                 }
             } else {
-                //TODO show error 'Please login first.'
+                this.props.history.push('/');
             }
         };
         this.state = {
@@ -60,8 +61,16 @@ class Main extends React.Component {
     }
 
     componentWillMount() {
-        RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
-        RequestManager.makeRequest('getUserBookmarks',false , _this.responseCallback);
+        let cb = (response) => {
+            if (response.success) {
+                this.responseCallback(response);
+                RequestManager.makeRequest('getUserBookmarks', false, _this.responseCallback);
+            } else {
+                this.props.history.push('/');
+            }
+        };
+        RequestManager.makeRequest('getAllFiles', false, cb);
+
     }
 
     uploadFileCallback(response) {

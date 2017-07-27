@@ -56,7 +56,7 @@ let createFilesDetailsTable =  (tableName) => {
         + nameCol + ' VARCHAR(255), '
         + ownerCol + ' VARCHAR(255), '
         + pathCol + ' VARCHAR(255),'
-        + fileContentCol + ' VARCHAR(255)'
+        + fileContentCol + ' LONGTEXT'
         + ');';
     con.query(queryString, (err, result) => {
         if(err) {
@@ -143,7 +143,7 @@ let  makeQuery = (queryRow, callback, answ ) => {
 module.exports = {
 
     insertFile: (file, callback) => {
-        file.content = getFileContent(file);
+        file.content = file.type !== 'application/pdf' ? getFileContent(file) : '';
         const queryString = 'INSERT INTO ' + FILES_DETAILS_TABLE_NAME
             + ' ( ' + nameCol + ', ' +  ownerCol + ', '
             + pathCol + ', ' + fileContentCol + ') VALUES("'

@@ -21,7 +21,8 @@ class FileUploader extends React.Component {
                   onSubmit={this.handleSubmit}
                   encType="multipart/form-data">
                 <input type="file"
-                       name="file" />
+                       name="file"
+                       accept="text/html, text/plain, application/pdf"/>
                 <input id="upl_btn"
                        type='submit'
                        value='Upload' />

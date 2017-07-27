@@ -15,7 +15,8 @@ router.get('/', (req, res) => {
             let foundedFiles = [];
             for(let i in result) {
                 let tmpFile = result[i];
-                foundedFiles.push(new File(tmpFile.name, tmpFile.owner, tmpFile.path, tmpFile.id, tmpFile.filteredContent ));
+                content = tmpFile.filteredContent ? tmpFile.filteredContent : "File content can't be previewed";
+                foundedFiles.push(new File(tmpFile.name, tmpFile.owner, tmpFile.path,'',tmpFile.id, content));
             }
             res.json({
                 success: true,

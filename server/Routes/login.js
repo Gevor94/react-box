@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
     let requestedUser = JSON.parse(req.query.data);
-    let getUserCB = (user) => {
+        getUserCB = (user) => {
         if(!user) {
             res.json({
                 success: false,
@@ -15,14 +15,13 @@ router.post('/', (req, res) => {
             });
         } else {
             if(crud.isPasswordsMatch(requestedUser.password, user.password)) {
-                var payload = {email: user.email};
-                var token = jwt.sign(payload, configs.jwtSecretKey);
+                let payload = {email: user.email},
+                    token = jwt.sign(payload, configs.jwtSecretKey);
                 res.json({
                     success: true,
                     token: token,
                     name: user.name,
                     surname: user.surname
-
                 });
             } else {
                 res.json({
