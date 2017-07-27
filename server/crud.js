@@ -193,6 +193,14 @@ module.exports = {
                         counter++;
                         result.push.apply(result,res);
                         if(counter >= splittedQuery.length) {
+                            let uniqueIds = [];
+                            uniqueIds = [...new Set(result.map(res => res.id))];
+                            result = result.filter((res) => {
+                                if (uniqueIds.length && uniqueIds.includes(res.id)) {
+                                    uniqueIds.splice(uniqueIds.indexOf(res.id),1);
+                                    return res;
+                                }
+                            });
                             callback(false, result);
                         }
                     });
