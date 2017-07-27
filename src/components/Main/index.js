@@ -13,11 +13,11 @@ class Main extends React.Component {
         this.userDetails = window.sessionStorage.accessToken;
         this.responseCallback = (response) => {
             if(response.success) {
-                this.setState({
-                    items: response.files
-                });
                 switch (response.action) {
                     case 'getAllFiles':
+                        this.setState({
+                            items: response.files
+                        });
                         if(this.state.searchedFiles) {
                             this.setState({
                                 searchedFiles: false
@@ -25,9 +25,25 @@ class Main extends React.Component {
                         }
                         break;
                     case 'search':
+                        this.setState({
+                            items: response.files
+                        });
                         if (!this.state.searchedFiles) {
                             this.setState({
                                 searchedFiles: true
+                            });
+                        }
+                        break;
+                    case 'getUserBookmarks':
+                        let bookmarks = [],
+                            files;
+                        if(response.files && response.files[0].bookmarks) {
+                            files = response.files[0].bookmarks.split('\n');
+                            for (let i = 0, len = files.length; i < len; ++i) {
+                                    bookmarks.push(files[i]);
+                            }
+                            this.setState({
+                                bookmarks: bookmarks
                             });
                         }
                         break;
@@ -38,12 +54,14 @@ class Main extends React.Component {
         };
         this.state = {
             items: [],
-            searchedFiles: false
+            searchedFiles: false,
+            bookmarks: []
         }
     }
 
     componentWillMount() {
         RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
+        RequestManager.makeRequest('getUserBookmarks',false , _this.responseCallback);
     }
 
     uploadFileCallback(response) {
@@ -72,6 +90,18 @@ class Main extends React.Component {
         }
     }
 
+    bookmarkFileCallback(response) {
+        if(response.success) {
+            let bookmarks;
+            bookmarks = response.file;
+            _this.setState({
+                bookmarks: bookmarks
+            });
+        } else {
+            //TODO show error
+        }
+        return;
+    }
 
     handleHomeClick() {
         RequestManager.makeRequest('getAllFiles', false, _this.responseCallback);
@@ -92,9 +122,15 @@ class Main extends React.Component {
         let userName = window.localStorage.name + ' ' + window.localStorage.surname;
         return (
             <div id="main-page">
-                <Topbar name={userName} homeClickCallback={this.handleHomeClick}  searchQuerySubmitCallback={this.handleSearchQuerySubmit}/>
-                <DocumentsList documents={this.state.items} searchedFiles={this.state.searchedFiles}
-                               uploadFileCallback={this.uploadFileCallback} deletedFileCallback={this.deletedFileCallback}/>
+                <Topbar name={userName} homeClickCallback={this.handleHomeClick}
+                        searchQuerySubmitCallback={this.handleSearchQuerySubmit}
+                        bookmarkFileCallback={this.bookmarkFileCallback}
+                        bookmarks={this.state.bookmarks}/>
+                <DocumentsList documents={this.state.items} bookmarks={this.state.bookmarks}
+                               searchedFiles={this.state.searchedFiles}
+                               deletedFileCallback={this.deletedFileCallback}
+                               bookmarkFileCallback={this.bookmarkFileCallback}
+                               uploadFileCallback={this.uploadFileCallback} />
             </div>
         );
     }

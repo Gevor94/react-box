@@ -20,7 +20,16 @@ class DocumentsList extends React.Component {
                 RequestManager.deleteFile(doc, this.props.deletedFileCallback);
                 break;
             case 'bookmark-doc':
-                //TODO add bookmark
+                let bookmarks = [];
+                bookmarks = this.props.bookmarks;
+                if (bookmarks.includes(doc.path)) {
+                        bookmarks = this.props.bookmarks.filter((bookmark) => {
+                        return doc.path !== bookmark;
+                    });
+                } else {
+                    bookmarks.push(doc.path);
+                }
+                RequestManager.changeBookmarks(bookmarks, this.props.bookmarkFileCallback);
                 break;
             case 'doc-filtered-content':
                 if(doc.filteredContentIsVisible) {
@@ -37,15 +46,33 @@ class DocumentsList extends React.Component {
     render() {
         let documentsListItem = this.props.documents.map((doc, i) => {
             return <div key={i} className="doc-item">
-                       <a href="#" id="doc-name" onClick={(props) => this.handleItemClick(props, doc)}> {doc.name} </a>
-                       <Glyphicon id="remove-doc" className="remove" glyph="remove-circle" onClick={(props) => {this.handleItemClick(props,doc)}} />
-                       <Glyphicon id="bookmark-doc" className="bookmark" glyph="star-empty" onClick= {(props) => {this.handleItemClick(props,doc)}}/>
-                       <span className="owner">created by {doc.owner}</span>
-                       <span onClick={(props) => this.handleItemClick(props,doc)} id="doc-filtered-content" className="doc-content"
-                                     style={{ visibility: this.props.searchedFiles ? 'initial' : 'hidden'}} >
-                           <Glyphicon id="doc-content" className="doc-glyph" glyph="list-alt" /> {doc.filteredContentIsVisible ? 'Close content' : 'Show content'}
+                       <a href="#" id="doc-name"
+                          onClick={(props) => this.handleItemClick(props, doc)}>
+                           {doc.name}
+                       </a>
+                       <Glyphicon id="remove-doc"
+                                  className="remove"
+                                  glyph="remove-circle"
+                                  onClick={(props) => {this.handleItemClick(props,doc)}} />
+                       <Glyphicon id="bookmark-doc"
+                                  className="bookmark"
+                                  glyph={this.props.bookmarks.includes(doc.path) ? "star" : "star-empty"}
+                                  onClick= {(props) => {this.handleItemClick(props,doc)}}/>
+                       <span className="owner">
+                           uploaded by {doc.owner}
                        </span>
-                       <ControlLabel className="doc-filtered-content">{doc.filteredContentIsVisible ? doc.filteredContent : null}</ControlLabel>
+                       <span onClick={(props) => this.handleItemClick(props,doc)}
+                             id="doc-filtered-content" className="doc-content"
+                             style={{ visibility: this.props.searchedFiles ? 'initial' : 'hidden'}} >
+                           <Glyphicon id="doc-content"
+                                      className="doc-glyph"
+                                      glyph="list-alt" />
+                           {doc.filteredContentIsVisible ? 'Close content' : 'Show content'}
+                       </span>
+                       <ControlLabel id="doc-filtered-content"
+                                     className="doc-filtered-content">
+                           {doc.filteredContentIsVisible ? doc.filteredContent : null}
+                       </ControlLabel>
                    </div>
         });
         return (

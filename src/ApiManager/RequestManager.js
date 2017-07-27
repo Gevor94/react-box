@@ -32,6 +32,23 @@ let requestManager = {
         });
     },
 
+    changeBookmarks: (data, callback) => {
+        let bookmarks = [];
+        for (let i=0, len=data.length; i < len; ++i ) {
+                bookmarks.push(data[i]);
+        }
+        fetch(Constants.SERVER_URL + 'bookmark' + '?data=' + JSON.stringify(bookmarks), {
+            method: 'POST',
+            headers: {
+                'access-token': window.localStorage.accessToken
+            }
+        }).then((response) => {
+            return response.json();
+        }).then((body) => {
+            callback(body);
+        });
+    },
+
     uploadFile: (data, callback) => {
         fetch(Constants.SERVER_URL + 'upload', {
             method: 'POST',

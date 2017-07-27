@@ -1,9 +1,9 @@
 {
-  "short_name": "React App",
+  "short_name": "boxIM",
   "name": "Create React App Sample",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "documents1.png",
       "sizes": "192x192",
       "type": "image/png"
     }

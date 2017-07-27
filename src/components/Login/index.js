@@ -71,25 +71,44 @@ class Login extends React.Component {
             return <Redirect push to={this.state.redirectTo}/>
         }
         return (
-            <div className="center">
-                <div>
-                    <span>Email</span>
-                    <input id="email" ref={(email) => this.email = email} className={"form-control " + emailClassName} placeholder="Email"/>
-                <Popover
-                    id="popover-basic"
-                    className={popoverClassName}
-                    placement="right"
-                    positionLeft={positionLeft}
-                    positionTop={positionTop}
-                    title="">
-                        The Email/Password you’ve entered doesn’t match any account.
-                </Popover>
-                <span>Password</span>
-                <input id="password" ref={(password) => this.password = password} type="password" className="form-control" placeholder="Password"/>
-                    <div id="buttons">
-                        <Button id="btn_sign_in" bsStyle={bsStyle} onClick={this.clickHandler}>Sign In</Button>
-                        <Button id="btn_register" bsStyle="primary" onClick={this.clickHandler}>Register</Button>
-                        <a id="forgot" onClick={this.clickHandler}>Forgot password?</a>
+            <div>
+                <div id="image"></div>
+                <div id="title">boxIM</div>
+                <div className="center">
+                    <div>
+                        <span>Email</span>
+                        <input id="email"
+                               ref={(email) => this.email = email}
+                               className={"form-control " + emailClassName}
+                               placeholder="Email"/>
+                        <Popover
+                            id="popover-basic"
+                            className={popoverClassName}
+                            placement="right"
+                            positionLeft={positionLeft}
+                            positionTop={positionTop}
+                            title="">
+                                The Email/Password you’ve entered doesn’t match any account.
+                        </Popover>
+                        <span>Password</span>
+                        <input
+                            id="password"
+                            ref={(password) => this.password = password}
+                            type="password"
+                            className="form-control"
+                            placeholder="Password"/>
+                        <div id="buttons">
+                            <Button id="btn_sign_in"
+                                    bsStyle={bsStyle}
+                                    onClick={this.clickHandler}>
+                                Sign In
+                            </Button>
+                            <Button id="btn_register"
+                                    bsStyle="primary"
+                                    onClick={this.clickHandler}>
+                                Register
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>

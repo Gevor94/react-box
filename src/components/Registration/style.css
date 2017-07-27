@@ -1,6 +1,11 @@
 body {
-    background: url(page_background.gif);
+    background: url(../../images/page_background.gif);
 
+}
+#registration-image {
+    content: url('../../images/registration.png');
+    width: 13%;
+    margin: 0 auto;
 }
 .page-header{
     margin: 5px;
@@ -9,7 +14,7 @@ body {
     color: #65676b;
 }
 .register-main {
-    margin-top: 10%;
+    margin-top: 3%;
     display: flex;
     justify-content: center;
     align-items: center;

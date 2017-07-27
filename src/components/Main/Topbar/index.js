@@ -1,6 +1,7 @@
 import React from 'react';
-import {Navbar, Nav, FormGroup, FormControl, Button, NavDropdown, MenuItem} from 'react-bootstrap';
+import {Navbar, Nav, FormGroup, FormControl, Button, NavDropdown, MenuItem, Glyphicon} from 'react-bootstrap';
 import {Redirect} from 'react-router';
+import RequestManager from '../../../ApiManager/RequestManager'
 import './styles.css'
 
 class Topbar extends React.Component {
@@ -12,7 +13,7 @@ class Topbar extends React.Component {
         };
     }
 
-    handleEvents(props) {
+    handleEvents(props,bookmark) {
         switch(props.target.id) {
             case 'sign_out':
                 window.localStorage.clear();
@@ -20,36 +21,78 @@ class Topbar extends React.Component {
                     redirectTo: './'
                 });
                 break;
+            case 'open-bookmark':
+                window.open('http://localhost:9000/' + props.target.text);
+                break;
+            case 'remove-icon':
+                let bookmarks = [];
+                bookmarks = this.props.bookmarks.filter((bookMark) => {
+                    return bookmark !== bookMark;
+                });
+                RequestManager.changeBookmarks(bookmarks, this.props.bookmarkFileCallback);
             default:
                 break;
         }
     }
 
+
     render() {
         if(this.state.redirectTo) {
             return <Redirect to={this.state.redirectTo}/>
         }
+        let bookmarksMenuItem = this.props.bookmarks.map((bookmark, i) => {
+            return <MenuItem key={i}
+                             className="bookmarks"
+                             id="open-bookmark"
+                             onClick={(props) => this.handleEvents(props, bookmark)}>
+                       {bookmark}
+                       <Glyphicon
+                           id="remove-icon"
+                           className="delete-icon"
+                           glyph="remove"
+                           onClick={(props) => this.handleEvents(props, bookmark)} >
+                       </Glyphicon>
+                   </MenuItem>
+        });
+
         return (
             <Navbar inverse collapseOnSelect>
                 <Navbar.Header>
-                    <Navbar.Brand>
-                        <a href="#" onClick={this.props.homeClickCallback}>Project Name</a>
+                    <Navbar.Brand >
+                        <a  id="nav-header"
+                            href="#"
+                            onClick={this.props.homeClickCallback}>
+                            boxIM
+                        </a>
                     </Navbar.Brand>
                 </Navbar.Header>
                 <Navbar.Collapse>
                     <Navbar.Form pullLeft>
                         <FormGroup >
-                            <FormControl type="text" placeholder="Search" onChange={(props)=>{
-                                this.searchquery = props.target.value;
-                            }
-                            }/>
+                            <FormControl type="text"
+                                         placeholder="Search"
+                                         onChange={(props)=>{this.searchquery = props.target.value;}}/>
                         </FormGroup>
                         {' '}
-                        <Button type="submit" onClick={(props) => {this.props.searchQuerySubmitCallback(this.searchquery)}}>Search</Button>
+                        <Button type="submit"
+                                onClick={(props) => {this.props.searchQuerySubmitCallback(this.searchquery)}}>
+                            Search
+                        </Button>
                     </Navbar.Form>
+                    <Nav pullLeft>
+                        <NavDropdown title="My bookmarks"
+                                     id="basic-nav-dropdown">
+                            {bookmarksMenuItem}
+                            {this.props.bookmarks.length ? null : "You haven't bookmarks"}
+                        </NavDropdown>
+                    </Nav>
                     <Nav pullRight>
-                        <NavDropdown title={this.props.name} id="basic-nav-dropdown">
-                            <MenuItem id="sign_out" onClick={this.handleEvents}>Sign out</MenuItem>
+                        <NavDropdown title={this.props.name}
+                                     id="basic-nav-dropdown">
+                            <MenuItem id="sign_out"
+                                      onClick={this.handleEvents}>
+                                Sign out
+                            </MenuItem>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

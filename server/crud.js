@@ -10,6 +10,7 @@ const USER_DETAILS_TABLE_NAME = configs.USER_DETAILS_TABLE_NAME,
     FILES_DETAILS_TABLE_NAME = configs.FILES_DETAILS_TABLE_NAME,
     idCol = 'id',
     nameCol = 'name',
+    bookmarksCol = 'bookmarks',
     surnameCol = 'surname',
     emailCol = 'email',
     passwordCol = 'password',
@@ -38,7 +39,8 @@ let createUsersDetailsTable =  (tableName) => {
         + nameCol +' VARCHAR(255), '
         + surnameCol + ' VARCHAR(255), '
         + emailCol + ' VARCHAR(255), '
-        + passwordCol +' VARCHAR(255));';
+        + passwordCol +' VARCHAR(255), '
+        + bookmarksCol +' VARCHAR(255));';
     con.query(queryString, (err, result) => {
         if(err) {
             console.log(err);
@@ -131,7 +133,7 @@ let  makeQuery = (queryRow, callback, answ ) => {
                 }
 
             } else {
-                callback(err, result);
+                answ(result);
             }
         }
     });
@@ -220,6 +222,20 @@ module.exports = {
         });
     },
 
+    changeBookmarks: (email, bookmark, callback) => {
+        let bookmarks = bookmark.join('\n');
+        const queryString = 'UPDATE ' + USER_DETAILS_TABLE_NAME
+        + ' SET ' + bookmarksCol + '='
+        + '\'' + bookmarks + '\'' + ' WHERE ' + emailCol + '=' + '\'' + email + '\'' + ';';
+
+        con.query(queryString, (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(false, result);
+        });
+    },
+
     isPasswordsMatch: (password, hash) => {
         return bcrypt.compareSync(password, hash);
     },
@@ -235,6 +251,19 @@ module.exports = {
                 return callback(false, result);
             }
             callback(result);
+        });
+    },
+
+    getUserBookmarks: (file,callback) => {
+        const queryString = 'SELECT ' + bookmarksCol + ' FROM '
+            + USER_DETAILS_TABLE_NAME
+            + ' WHERE ' + emailCol + '="' + file.email + '";';
+
+        con.query(queryString, (err, result) => {
+            if (err) {
+                callback(err, result);
+            }
+            callback(err,result);
         });
     }
 };

@@ -2,9 +2,22 @@
 	display:flex;
 	justify-content:center;
 	align-items:center;
-	margin-top: 15%
+	margin-top: 3%;
 }
 
+#image {
+	width: 13%;
+	margin: 0 auto;
+	content: url('../../images/main_image.png');
+}
+#title {
+	color: #337ab7;
+	font-family: "Great Vibes", cursive;
+	font-size: 400%;
+	font-weight: normal;
+	text-align: center;
+	text-shadow: 0 1px 1px #fff
+}
 .hide {
 	display: none;
 }

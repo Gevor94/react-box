@@ -1,6 +1,26 @@
 #topbar {
     display: -webkit-box;
 }
+#nav-header {
+    cursor: pointer;
+}
+#open-bookmark {
+    display: inline;
+    margin-top: 2px;
+    margin-left: 1px;
+    background-color: transparent;
+}
+
+.bookmarks {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    margin-top: 1px;
+}
+.glyphicon-remove {
+    float: right;
+    margin-top: 2px;
+}
+
 #upload-button {
     background-color: Transparent;
     background-repeat:no-repeat;

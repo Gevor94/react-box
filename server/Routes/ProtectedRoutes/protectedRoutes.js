@@ -6,6 +6,8 @@ const express = require('express'),
     mainRoute = require('./main'),
     getAllFiles = require('./getAllFiles'),
     search = require('./search');
+    bookmarks = require('./getUserBookmarks');
+    changeBookmark = require('./changeBookmark');
     deleteFile = require('./delete');
 
 const router = express.Router();
@@ -30,6 +32,8 @@ router.use((req, res, next) => {
 router.use('/upload', uploadRoute);
 router.use('/main', mainRoute);
 router.use('/getAllFiles', getAllFiles);
+router.use('/getUserBookmarks', bookmarks);
+router.use('/bookmark', changeBookmark);
 router.use('/search', search);
 router.use('/delete', deleteFile);
 

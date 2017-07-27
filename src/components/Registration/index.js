@@ -36,8 +36,8 @@ class Registration extends React.Component {
     }
 
     clickHandler(props) {
-        let cb = (success) => {
-            if(success) {
+        let cb = (result) => {
+            if(result.success) {
                 this.props.history.push('/');
             } else {
                 this.setState({
@@ -226,6 +226,8 @@ class Registration extends React.Component {
                isDisabled = true;
           }
       return (
+          <div>
+          <div id="registration-image"></div>
           <div className="register-main">
             <div className="register-group">
                 <div className="page-header">
@@ -237,14 +239,18 @@ class Registration extends React.Component {
                       className="register-control"
                       placeholder="Name"
                       onChange = {this.handleNameInput}/>
-                    <ControlLabel className="field-error"> {this.state.nameIsEmpty && this.state.nameIsPristine ? "Name field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.nameIsEmpty && this.state.nameIsPristine ? "Name field can't be empty" : null}
+                    </ControlLabel>
                   </div>
                   <div className="register-block">
                     <FormControl
                       className="register-control"
                       placeholder="Surname"
                       onChange = {this.handleSurnameInput}/>
-                    <ControlLabel className="field-error"> {this.state.surnameIsEmpty && this.state.surnameIsPristine ? "Surname field can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.surnameIsEmpty && this.state.surnameIsPristine ? "Surname field can't be empty" : null}
+                    </ControlLabel>
                   </div>
                   <div className="register-block">
                     <FormControl
@@ -252,9 +258,15 @@ class Registration extends React.Component {
                       className="register-control"
                       placeholder="Email"
                       onChange={this.handleEmailInput}/>
-                    <ControlLabel className="field-error"> {this.state.emailIsEmpty && this.state.emailIsPristine ? "Email field can't be empty" : null} </ControlLabel>
-                    <ControlLabel className="field-error"> {this.state.emailHasError ? "Email is invalid" : null} </ControlLabel>
-                    <ControlLabel className="field-error"> {this.state.emailIsBusy ? "This email is already in use, try another one" : null} </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.emailIsEmpty && this.state.emailIsPristine ? "Email field can't be empty" : null}
+                    </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.emailHasError ? "Email is invalid" : null}
+                    </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.emailIsBusy ? "This email is already in use, try another one" : null}
+                    </ControlLabel>
                  </div>
                  <div className="register-block">
                     <FormControl
@@ -262,7 +274,9 @@ class Registration extends React.Component {
                       className="register-control"
                       placeholder="Password"
                       onChange={this.handlePasswordInput}/>
-                    <ControlLabel className="field-error"> {this.state.passwordIsEmpty && this.state.passwordIsPristine ? "Password can't be empty" : null} </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.passwordIsEmpty && this.state.passwordIsPristine ? "Password can't be empty" : null}
+                    </ControlLabel>
                  </div>
                  <div className="register-block">
                     <FormControl
@@ -270,15 +284,31 @@ class Registration extends React.Component {
                       className="register-control"
                       placeholder="Re-enter password"
                       onChange={this.handleConfirmPasswordInput}/>
-                    <ControlLabel className="field-error"> {this.state.confPasswordIsEmpty && this.state.confPasswordIsPristine ? "Re-enter password field can't be empty" : null} </ControlLabel>
-                    <ControlLabel className="field-error"> {this.state.confPasswordHasError ? "Password and re-entered password is different" : null} </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.confPasswordIsEmpty && this.state.confPasswordIsPristine ? "Re-enter password field can't be empty" : null}
+                    </ControlLabel>
+                    <ControlLabel className="field-error">
+                        {this.state.confPasswordHasError ? "Password and re-entered password is different" : null}
+                    </ControlLabel>
                  </div>
                 </div>
                 <div>
-                    <Button id="btn_sign_up" disabled={isDisabled} bsStyle="primary" type="submit" className="btn-register" onClick={this.clickHandler}>Sign Up</Button>
-                    <Button id="btn_cancel" type="submit" className="btn-register" onClick={this.clickHandler}>Cancel</Button>
+                    <Button id="btn_sign_up"
+                            disabled={isDisabled}
+                            bsStyle="primary" type="submit"
+                            className="btn-register"
+                            onClick={this.clickHandler}>
+                        Sign Up
+                    </Button>
+                    <Button id="btn_cancel"
+                            type="submit"
+                            className="btn-register"
+                            onClick={this.clickHandler}>
+                        Cancel
+                    </Button>
                 </div>
             </div>
+          </div>
           </div>
       );
     }
