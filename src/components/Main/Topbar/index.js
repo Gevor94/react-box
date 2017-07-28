@@ -50,7 +50,7 @@ class Topbar extends React.Component {
                            id="remove-icon"
                            className="delete-icon"
                            glyph="remove"
-                           onClick={(props) => this.handleEvents(props, bookmark)} >
+                           onClick={(props) => this.handleEvents(props, bookmark)}>
                        </Glyphicon>
                    </MenuItem>
         });
@@ -83,7 +83,7 @@ class Topbar extends React.Component {
                         <NavDropdown title="My bookmarks"
                                      id="basic-nav-dropdown">
                             {bookmarksMenuItem}
-                            {this.props.bookmarks.length ? null : "You haven't bookmarks"}
+                            {this.props.bookmarks.length ? null : <span id="no-bookmarks"> You haven't bookmarks </span>}
                         </NavDropdown>
                     </Nav>
                     <Nav pullRight>

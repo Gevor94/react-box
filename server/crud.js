@@ -67,8 +67,32 @@ let createFilesDetailsTable =  (tableName) => {
 };
 
 let getFileContent = (file) => {
-    var content = fs.readFileSync(path.join(__dirname, file.path));
+    let content = fs.readFileSync(path.join(__dirname, file.path));
     return content.toString().replace(/\"/g, '\\"');
+};
+
+let checkBookmarks = (result, email, cb) => {
+    let res = [],
+        bookmarks = result[0].bookmarks.split('\n'),
+        filePath = path.join(__dirname, './uploads/');
+    fs.readdir(filePath, (err, files) => {
+        files.forEach(file => {
+            if (bookmarks.includes("uploads/" + file)) {
+                res.push("uploads/" + file);
+            }
+        });
+        res = res.join('\n');
+        const queryString = 'UPDATE ' + USER_DETAILS_TABLE_NAME
+            + ' SET ' + bookmarksCol + '='
+            + '\'' + res + '\'' + ' WHERE ' + emailCol + '=' + '\'' + email + '\'' + ';';
+        con.query(queryString, (err, ans) => {
+            if (err) {
+                return cb(err, ans);
+            }
+            result[0].bookmarks = res;
+            return cb(err, result);
+        });
+    })
 };
 
 let getHash = (password) => {
@@ -176,6 +200,9 @@ module.exports = {
         const queryString = 'SELECT * FROM ' + FILES_DETAILS_TABLE_NAME;
         con.query(queryString, (err, result) => {
             if(err) {
+                if(err.errno === 1146) {
+                    return createFilesDetailsTable(FILES_DETAILS_TABLE_NAME);
+                }
                 return callback(err);
             }
             callback(false, result);
@@ -270,8 +297,13 @@ module.exports = {
         con.query(queryString, (err, result) => {
             if (err) {
                 callback(err, result);
+            } else if (result[0].bookmarks) {
+                checkBookmarks(result, file.email ,(err,res) => {
+                    callback(err,res);
+                });
+            } else {
+                callback(err,result);
             }
-            callback(err,result);
         });
     }
 };

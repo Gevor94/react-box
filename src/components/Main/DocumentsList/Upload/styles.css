@@ -3,3 +3,9 @@
     display: inline-flex;
     margin-top: 2px;
 }
+#size-error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    border: 1px solid;
+    margin-left: 3px;
+}

@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', (req, res) => {
     let requestedUser = JSON.parse(req.query.data);
-        getUserCB = (user) => {
+    let getUserCB = (user) => {
         if(!user) {
             res.json({
                 success: false,

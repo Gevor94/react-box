@@ -10,7 +10,9 @@
     margin-left: 1px;
     background-color: transparent;
 }
-
+#no-bookmarks {
+    padding-left: 5%;
+}
 .bookmarks {
     border-top: 1px solid gray;
     border-bottom: 1px solid gray;
